@@ -39,7 +39,7 @@ class AppTheme {
     displayMedium: TextStyle(
       fontFamily: 'Roquefort',
       fontSize: 16,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w400,
       color: Colors.black,
     ),
     displaySmall: TextStyle(
@@ -49,33 +49,30 @@ class AppTheme {
       color: Color.fromARGB(127, 0, 0, 0),
     ),
     bodyLarge: TextStyle(
-      fontFamily: 'Roquefort',
-      fontSize: 18,
-      fontWeight: FontWeight.normal,
-      color: secondaryColor
-    ),
+        fontFamily: 'Roquefort',
+        fontSize: 18,
+        fontWeight: FontWeight.normal,
+        color: secondaryColor),
     bodyMedium: TextStyle(
-      fontFamily: 'Roquefort',
-      fontSize: 14,
-      fontWeight: FontWeight.normal,
-      color: secondaryColor
-    ),
+        fontFamily: 'Roquefort',
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: secondaryColor),
     bodySmall: TextStyle(
-      fontFamily: 'Roquefort',
-      fontSize: 10,
-      fontWeight: FontWeight.normal,
-      color: secondaryColor
-    ),
+        fontFamily: 'Roquefort',
+        fontSize: 10,
+        fontWeight: FontWeight.normal,
+        color: secondaryColor),
     labelLarge: TextStyle(
       fontFamily: 'Roquefort',
       fontSize: 22,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w400,
       color: Colors.black,
     ),
     labelMedium: TextStyle(
       fontFamily: 'Roquefort',
       fontSize: 20,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w400,
       color: Colors.black,
     ),
     labelSmall: TextStyle(

@@ -4,6 +4,7 @@ import 'package:jahnhalle/components/drawer/my_drawer.dart';
 import 'package:jahnhalle/pages/order_page.dart';
 import 'package:jahnhalle/services/database/event.dart';
 import 'package:jahnhalle/services/database/firestore.dart';
+import 'package:jahnhalle/themes/colors.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -20,10 +21,35 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomePageAppBar(title: widget.title), // Use the custom HomePageAppBar
+      appBar:
+          HomePageAppBar(title: widget.title), // Use the custom HomePageAppBar
       drawer: const CustomDrawer(), // Use the custom drawer
       body: Column(
         children: [
+          Row(
+            children: [
+              Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      width: 2.0),
+                  color: scaffoldBackgroundColor,
+                ),
+              ),
+              Container(
+                height: 100,
+                width: 150,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      width: 2.0),
+                  color: Colors.transparent,
+                ),
+              ),
+            ],
+          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +58,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const OrderPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const OrderPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -65,9 +92,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: events.length,
                   itemBuilder: (context, index) {
                     double leftPadding = index == 0 ? 20.0 : 8.0;
-                    double rightPadding = index == events.length - 1 ? 20.0 : 8.0;
+                    double rightPadding =
+                        index == events.length - 1 ? 20.0 : 8.0;
                     return Padding(
-                      padding: EdgeInsets.only(left: leftPadding, right: rightPadding),
+                      padding: EdgeInsets.only(
+                          left: leftPadding, right: rightPadding),
                       child: EventCard(event: events[index]),
                     );
                   },
@@ -88,7 +117,7 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 300,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +125,8 @@ class EventCard extends StatelessWidget {
           ClipRRect(
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).colorScheme.onSurface, width: 2.0),
+                border: Border.all(
+                    color: Theme.of(context).colorScheme.onSurface, width: 2.0),
                 color: Colors.white,
               ),
               child: event.imageUrl != null

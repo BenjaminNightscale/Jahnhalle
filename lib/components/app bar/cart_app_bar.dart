@@ -24,11 +24,11 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget {
               children: <Widget>[
                 Text(
                   "Tisch 30",
-                  style: Theme.of(context).textTheme.displayLarge,
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 Text(
                   "ca. 5min",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.secondary),
                 ),
               ],

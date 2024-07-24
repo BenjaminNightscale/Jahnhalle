@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "996649523240",
+    "project_id": "jahnhalle-4742a",
+    "storage_bucket": "jahnhalle-4742a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996649523240:android:ce45f6f3488353c8ec3d1d",
+        "android_client_info": {
+          "package_name": "com.app.jahnhalle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsLves6WExKgz4w4wQmjK9HyAkmWBtHyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
