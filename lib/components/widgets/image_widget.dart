@@ -6,7 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jahnhalle/utils/extensions.dart';
+import 'package:jahnhalle/components/utils/extensions.dart';
 
 class ImageWidget<T> extends StatelessWidget {
   String url;

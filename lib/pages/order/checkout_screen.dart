@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jahnhalle/components/app%20bar/cart_app_bar.dart';
-import 'package:jahnhalle/components/cart/cart.dart';
+import 'package:jahnhalle/services/database/cart.dart';
 import 'package:jahnhalle/components/footer/footer.dart';
 import 'package:jahnhalle/main.dart';
-import 'package:jahnhalle/pages/mohsim/model/checkout_cart_model.dart';
-import 'package:jahnhalle/pages/mohsim/payment_screen.dart';
-import 'package:jahnhalle/themes/colors.dart';
+import 'package:jahnhalle/services/model/checkout_cart_model.dart';
+import 'package:jahnhalle/pages/order/payment_screen.dart';
+import 'package:jahnhalle/components/themes/colors.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -33,7 +33,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   return Container(
                     width: dimensions.width * 0.45,
                     padding: EdgeInsets.all(dimensions.width * 0.03),
-                    margin: EdgeInsets.all(dimensions.width * 0.03),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Theme.of(context).colorScheme.onSurface,
@@ -51,7 +52,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               fontSize: 17),
                         ),
                         Text(
-                          item.category,
+                          item.ingredients.join(', '),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Row(

@@ -4,21 +4,18 @@ import 'package:intl/intl.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:jahnhalle/components/cart/cart.dart';
+import 'package:jahnhalle/services/database/cart.dart';
 import 'package:jahnhalle/components/footer/footer.dart';
-import 'package:jahnhalle/components/my_timeline_tile.dart';
 
 import 'package:jahnhalle/main.dart';
-import 'package:jahnhalle/pages/mohsim/main_dashboard.dart';
-import 'package:jahnhalle/pages/mohsim/model/checkout_cart_model.dart';
-import 'package:jahnhalle/pages/mohsim/model/order_detail_model.dart';
-import 'package:jahnhalle/pages/mohsim/model/payment_method_model.dart';
-import 'package:jahnhalle/pages/mohsim/model/tips_model.dart';
+import 'package:jahnhalle/pages/home/main_dashboard.dart';
 import 'package:jahnhalle/services/database/drink.dart';
-import 'package:jahnhalle/themes/colors.dart';
-import 'package:jahnhalle/utils/dimension.dart';
-import 'package:jahnhalle/widgets/image_widget.dart';
+import 'package:jahnhalle/components/themes/colors.dart';
+import 'package:jahnhalle/components/utils/dimension.dart';
+import 'package:jahnhalle/components/widgets/image_widget.dart';
 import 'package:provider/provider.dart';
+
+import '../../services/model/order_detail_model.dart';
 
 class OrderOverviewScreen extends StatefulWidget {
   final int orderID;
@@ -31,7 +28,7 @@ class OrderOverviewScreen extends StatefulWidget {
 class _OrderOverviewScreenState extends State<OrderOverviewScreen> {
   OrderDetail? orderDetail;
   Timer? _timer;
-
+  bool isDeletePopup = false;
   @override
   void initState() {
     _startUpdateTimer();
@@ -52,11 +49,89 @@ class _OrderOverviewScreenState extends State<OrderOverviewScreen> {
         context.read<Cart>().streamOrderDetails(widget.orderID).listen((order) {
           if (order != null) {
             orderDetail = order;
+            if (order.isDeleted == true) {
+              if (isDeletePopup == false) {
+                showDeleteOrderPopUp();
+                order.items?.forEach(
+                  (element) {
+                    context.read<Cart>().restockDrink(
+                        drinkId: element.id ?? '',
+                        quantity: element.quantity ?? 0);
+                  },
+                );
+              }
+            }
             updateStatus(order.status ?? '');
           }
         });
       });
     });
+  }
+
+  Future showDeleteOrderPopUp() {
+    isDeletePopup = true;
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Dialog(
+            clipBehavior: Clip.hardEdge,
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 2),
+            ),
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Gelöscht',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge
+                        ?.copyWith(fontSize: 16),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Ihre Bestellung wurde gelöscht.',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(fontSize: 14),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(color: Colors.black, width: 2),
+                          borderRadius: BorderRadius.circular(0.0),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainDashboard(),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                      child: Text(
+                        'Ok',
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium
+                            ?.copyWith(fontSize: 14),
+                      ))
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -96,6 +171,9 @@ class _OrderOverviewScreenState extends State<OrderOverviewScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Display items
+                      const SizedBox(
+                        height: 10.0,
+                      ),
                       ListView.builder(
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
@@ -104,7 +182,7 @@ class _OrderOverviewScreenState extends State<OrderOverviewScreen> {
                           final item = orderDetail?.items?[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 22),
+                                vertical: 5, horizontal: 20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -136,15 +214,15 @@ class _OrderOverviewScreenState extends State<OrderOverviewScreen> {
                         },
                       ),
 
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: dimensions.width * 0.03),
-                        child: const Divider(),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Divider(),
                       ),
 
                       Container(
                         width: dimensions.width,
-                        margin: EdgeInsets.all(dimensions.width * 0.03),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
                         color: scaffoldBackgroundColor,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -176,7 +254,8 @@ class _OrderOverviewScreenState extends State<OrderOverviewScreen> {
                       ),
                       Container(
                         width: dimensions.width,
-                        margin: EdgeInsets.all(dimensions.width * 0.03),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
                         color: scaffoldBackgroundColor,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -209,17 +288,15 @@ class _OrderOverviewScreenState extends State<OrderOverviewScreen> {
                       ),
                       // Display table details
 
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: dimensions.width * 0.03),
-                        child: const Divider(),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Divider(),
                       ),
                     ],
                   ),
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: dimensions.width * 0.03,
-                  vertical: dimensions.width * 0.03),
+                  horizontal: 20.0, vertical: dimensions.width * 0.03),
               child: OrderTimeline(statuses: statuses),
             ),
           ],
@@ -243,6 +320,7 @@ class _OrderOverviewScreenState extends State<OrderOverviewScreen> {
               ),
               (route) => false,
             );
+            // showDeleteOrderPopUp();
           },
         );
       },

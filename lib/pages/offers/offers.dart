@@ -5,8 +5,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jahnhalle/main.dart';
-import 'package:jahnhalle/pages/mohsim/offer_details.dart';
-import 'package:jahnhalle/widgets/image_widget.dart';
+import 'package:jahnhalle/pages/offers/offer_details.dart';
+import 'package:jahnhalle/components/widgets/image_widget.dart';
 
 class OffersScreen extends StatefulWidget {
   const OffersScreen({super.key});
@@ -43,7 +43,7 @@ class _OffersScreenState extends State<OffersScreen> {
               List<QueryDocumentSnapshot> data = snapshot.data?.docs ?? [];
 
               return ListView.separated(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(20),
                   itemBuilder: (context, index) {
                     final timeDiff = DateTime.parse(
                             (data[index]['end_time'] as Timestamp)
@@ -208,7 +208,7 @@ class _BannerWidgetState extends State<BannerWidget> {
             ),
           ),
           SizedBox(
-            width: dimensions.width * 0.3,
+            width: dimensions.width * 0.36,
           ),
         ],
       ),

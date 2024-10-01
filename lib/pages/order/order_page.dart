@@ -2,13 +2,12 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:jahnhalle/components/cart/cart.dart';
+import 'package:jahnhalle/services/database/cart.dart';
 import 'package:jahnhalle/components/footer/footer.dart';
 import 'package:jahnhalle/components/drink_item.dart';
-import 'package:jahnhalle/components/order_app_bar.dart';
+import 'package:jahnhalle/components/app%20bar/order_app_bar.dart';
 import 'package:jahnhalle/main.dart';
-import 'package:jahnhalle/pages/cart_page.dart';
-import 'package:jahnhalle/pages/mohsim/checkout_screen.dart';
+import 'package:jahnhalle/pages/order/checkout_screen.dart';
 import 'package:jahnhalle/services/database/drink.dart';
 import 'package:jahnhalle/services/database/firestore.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +37,13 @@ class _OrderPageState extends State<OrderPage> {
         future: FirebaseFirestore.instance.collection("tables").get(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final List<DocumentSnapshot> tableDocs = snapshot.data!.docs;
+            final List<DocumentSnapshot> tableDocs =
+                snapshot.data!.docs.map((doc) => doc).toList()
+                  ..sort((a, b) {
+                    int aNumber = int.parse(a["tableNumber"].split(' ')[1]);
+                    int bNumber = int.parse(b["tableNumber"].split(' ')[1]);
+                    return aNumber.compareTo(bNumber);
+                  });
             return Dialog(
               clipBehavior: Clip.hardEdge,
               shape: const RoundedRectangleBorder(
@@ -56,12 +61,14 @@ class _OrderPageState extends State<OrderPage> {
                         .findRenderObject() as RenderBox;
 
                     final selectedTable = await showMenu(
+                      constraints:
+                          BoxConstraints(minWidth: dimensions.width * 0.5),
                       context: context,
                       position: RelativeRect.fromLTRB(
-                        overlay.size.width / 2 - dimensions.width * 0.12,
+                        overlay.size.width / 2 - dimensions.width * 0.01,
+                        overlay.size.height / 1.85,
+                        overlay.size.width / 2 - dimensions.width * 0.25,
                         overlay.size.height / 2 - dimensions.width * 0.01,
-                        overlay.size.width / 2 - dimensions.width * 0.1,
-                        overlay.size.height / 2 - dimensions.width * 0.04,
                       ),
                       items: tableDocs.map((doc) {
                         return PopupMenuItem<Map<String, dynamic>>(
@@ -120,7 +127,8 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const OrderAppBar(),
+      appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight), child: OrderAppBar()),
       body: const DrinkMenu(),
       bottomNavigationBar: _buildFooter(context),
     );
@@ -239,17 +247,10 @@ class _DrinkMenuState extends State<DrinkMenu> {
 
     for (var category in categories) {
       categoryIndexMap[category.toUpperCase()] = index;
-
-      // EdgeInsets categoryPadding = index == 0
-      //     ? const EdgeInsets.only(
-      //         top: 20.0, bottom: 15.0, left: 15.0, right: 15.0)
-      //     : const EdgeInsets.only(
-      //         top: 0.0, bottom: 10.0, left: 15.0, right: 15.0);
-
       listWidgets.add(
         Padding(
           padding: const EdgeInsets.only(
-              top: 20.0, bottom: 12.0, left: 15.0, right: 15.0),
+              top: 20.0, bottom: 12.0, left: 20.0, right: 20.0),
           child: Text(
             category,
             style: Theme.of(context)

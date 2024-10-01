@@ -6,11 +6,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jahnhalle/main.dart';
-import 'package:jahnhalle/pages/mohsim/main_dashboard.dart';
-import 'package:jahnhalle/pages/mohsim/utils/keys.dart';
-import 'package:jahnhalle/pages/mohsim/utils/social_login.dart';
-import 'package:jahnhalle/pages/mohsim/utils/sp.dart';
-import 'package:jahnhalle/widgets/image_widget.dart';
+import 'package:jahnhalle/pages/home/main_dashboard.dart';
+import 'package:jahnhalle/components/utils/keys.dart';
+import 'package:jahnhalle/components/utils/social_login.dart';
+import 'package:jahnhalle/components/utils/sp.dart';
+import 'package:jahnhalle/components/widgets/image_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

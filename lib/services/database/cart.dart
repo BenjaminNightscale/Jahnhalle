@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:jahnhalle/pages/mohsim/model/order_detail_model.dart';
-import 'package:jahnhalle/pages/mohsim/order_overview.dart';
+import 'package:jahnhalle/services/model/order_detail_model.dart';
+import 'package:jahnhalle/pages/order/order_overview.dart';
 import 'package:jahnhalle/services/database/drink.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -46,7 +46,7 @@ class Cart with ChangeNotifier {
 
   double get subtotal {
     return _items.fold(
-        0.0, (total, current) => total + current.price * current.quantity);
+        0.0, (total, current) => total + (current.price * current.quantity));
   }
 
   void setTipPercentage(double percentage) {
@@ -104,6 +104,13 @@ class Cart with ChangeNotifier {
         .update({'quantity': FieldValue.increment(1)});
   }
 
+  void restockDrink({required String drinkId, required int quantity}) {
+    FirebaseFirestore.instance
+        .collection('drinks')
+        .doc(drinkId)
+        .update({'quantity': FieldValue.increment(quantity)});
+  }
+
   void finalizeOrder() {
     _items.clear();
     notifyListeners();
@@ -141,6 +148,13 @@ class Cart with ChangeNotifier {
     });
   }
 
+  bool isAddingOrder = false;
+  void updateisAddingOrder(bool value) {
+    isAddingOrder = value;
+    log("isAddingOrder $isAddingOrder");
+    notifyListeners();
+  }
+
   Future<void> addOrder(BuildContext context) async {
     try {
       int orderId = await _getNextOrderId();
@@ -163,6 +177,7 @@ class Cart with ChangeNotifier {
         'paymentMethod': "cashPayment",
         'table': tableData,
         'items': itemMaps,
+        'isDeleted': false,
         'createdAt': FieldValue.serverTimestamp(),
         'updatedAt': FieldValue.serverTimestamp(),
         'deliveredAt': FieldValue.serverTimestamp(),
@@ -175,6 +190,7 @@ class Cart with ChangeNotifier {
               orderID: orderId,
             ),
           ));
+
       log('Order added successfully with ID $orderId!');
     } catch (e) {
       log('Failed to add order: $e');

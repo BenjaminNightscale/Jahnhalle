@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:jahnhalle/components/cart/cart.dart';
+import 'package:jahnhalle/services/database/cart.dart';
 import 'package:jahnhalle/main.dart';
-import 'package:jahnhalle/pages/order_page.dart';
+import 'package:jahnhalle/pages/order/order_page.dart';
 import 'package:jahnhalle/services/database/drink.dart';
-import 'package:jahnhalle/themes/colors.dart';
+import 'package:jahnhalle/components/themes/colors.dart';
 import 'package:provider/provider.dart';
 
 class DrinkItem extends StatefulWidget {
@@ -25,7 +27,13 @@ class _DrinkItemState extends State<DrinkItem> {
         future: FirebaseFirestore.instance.collection("tables").get(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final List<DocumentSnapshot> tableDocs = snapshot.data!.docs;
+            final List<DocumentSnapshot> tableDocs =
+                snapshot.data!.docs.map((doc) => doc).toList()
+                  ..sort((a, b) {
+                    int aNumber = int.parse(a["tableNumber"].split(' ')[1]);
+                    int bNumber = int.parse(b["tableNumber"].split(' ')[1]);
+                    return aNumber.compareTo(bNumber);
+                  });
             return Dialog(
               clipBehavior: Clip.hardEdge,
               shape: const RoundedRectangleBorder(
@@ -43,17 +51,21 @@ class _DrinkItemState extends State<DrinkItem> {
                         .findRenderObject() as RenderBox;
 
                     final selectedTable = await showMenu(
+                      constraints:
+                          BoxConstraints(minWidth: dimensions.width * 0.5),
                       context: context,
                       position: RelativeRect.fromLTRB(
-                        overlay.size.width / 2 - dimensions.width * 0.12,
+                        overlay.size.width / 2 - dimensions.width * 0.01,
+                        overlay.size.height / 1.85,
+                        overlay.size.width / 2 - dimensions.width * 0.25,
                         overlay.size.height / 2 - dimensions.width * 0.01,
-                        overlay.size.width / 2 - dimensions.width * 0.1,
-                        overlay.size.height / 2 - dimensions.width * 0.04,
                       ),
                       items: tableDocs.map((doc) {
                         return PopupMenuItem<Map<String, dynamic>>(
-                          value: doc[
-                              'tableNumber'], // Assuming 'table_number' is a field in your table documents
+                          value: {
+                            "tableNumber": doc['tableNumber'],
+                            'capacity': doc['capacity']
+                          },
                           child: Center(
                               child: Text(
                             '${doc['tableNumber']}',
@@ -64,10 +76,12 @@ class _DrinkItemState extends State<DrinkItem> {
                     );
 
                     if (selectedTable != null) {
+                      log('message $selectedTable');
                       // Handle the selected table, e.g., update UI or state
                       context.read<Cart>().updateTable(
                           selectedTable['tableNumber'],
                           selectedTable['capacity']);
+
                       Navigator.pop(context);
                     }
                   },
@@ -79,7 +93,10 @@ class _DrinkItemState extends State<DrinkItem> {
                         children: [
                           Text(
                             'TISCH AUSWÄHLEN',
-                            style: Theme.of(context).textTheme.displayMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium
+                                ?.copyWith(fontSize: 14),
                           ),
                           const Icon(Icons.keyboard_arrow_down)
                         ],
@@ -113,7 +130,7 @@ class _DrinkItemState extends State<DrinkItem> {
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0.0),
-        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
+        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
         decoration: BoxDecoration(
           color: isOutOfStock
               ? Theme.of(context).colorScheme.surface.withOpacity(0.5)

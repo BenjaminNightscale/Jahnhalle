@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jahnhalle/components/cart/cart.dart';
+import 'package:jahnhalle/services/database/cart.dart';
 import 'package:provider/provider.dart';
 
 class CartAppBar extends StatelessWidget implements PreferredSizeWidget {

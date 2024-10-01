@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:jahnhalle/components/cart/cart.dart';
+import 'package:jahnhalle/services/database/cart.dart';
 import 'package:provider/provider.dart';
 
 class Footer extends StatelessWidget {
   final String buttonText;
   final String? link;
   final bool showTotal;
+  final double? tipAmount;
   final VoidCallback? onPress;
 
   Footer(
       {required this.buttonText,
       this.link,
       this.onPress,
+      this.tipAmount,
       this.showTotal = true});
 
   @override
@@ -80,7 +82,9 @@ class Footer extends StatelessWidget {
                       baselineType: TextBaseline.alphabetic,
                       baseline: 20, // Adjust this value to align correctly
                       child: Text(
-                        '${cart.subtotal.toStringAsFixed(2)} €',
+                        tipAmount != null
+                            ? "${(tipAmount! + cart.subtotal).toStringAsFixed(2)} €"
+                            : '${cart.subtotal.toStringAsFixed(2)} €',
                         style: Theme.of(context)
                             .textTheme
                             .displayMedium

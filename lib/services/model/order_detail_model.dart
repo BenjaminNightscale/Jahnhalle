@@ -5,6 +5,7 @@ class OrderDetail {
   final Timestamp? updatedAt;
   final Timestamp? deliveredAt;
   final int? orderId;
+  final bool? isDeleted;
   final String? paymentMethod;
   final String? orderStatus;
   final List<Item>? items;
@@ -16,6 +17,7 @@ class OrderDetail {
     this.updatedAt,
     this.deliveredAt,
     this.orderId,
+    this.isDeleted,
     this.paymentMethod,
     this.orderStatus,
     this.items,
@@ -28,6 +30,7 @@ class OrderDetail {
         updatedAt: json['updatedAt'],
         deliveredAt: json['deliveredAt'],
         orderId: json["orderId"],
+        isDeleted: json["isDeleted"],
         paymentMethod: json["paymentMethod"],
         orderStatus: json["orderStatus"],
         items: json["items"] == null
@@ -42,6 +45,7 @@ class OrderDetail {
         "updatedAt": updatedAt,
         "deliveredAt": deliveredAt,
         "orderId": orderId,
+        "isDeleted": isDeleted,
         "paymentMethod": paymentMethod,
         "orderStatus": orderStatus,
         "items": items == null

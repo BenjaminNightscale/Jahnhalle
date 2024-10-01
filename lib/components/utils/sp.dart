@@ -1,4 +1,4 @@
-import 'package:jahnhalle/pages/mohsim/utils/social_login.dart';
+import 'package:jahnhalle/components/utils/social_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SP {

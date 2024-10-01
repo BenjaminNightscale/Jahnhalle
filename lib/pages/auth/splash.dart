@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jahnhalle/main.dart';
-import 'package:jahnhalle/pages/mohsim/login.dart';
-import 'package:jahnhalle/pages/mohsim/main_dashboard.dart';
-import 'package:jahnhalle/pages/mohsim/utils/keys.dart';
-import 'package:jahnhalle/pages/mohsim/utils/sp.dart';
-import 'package:jahnhalle/widgets/image_widget.dart';
+import 'package:jahnhalle/pages/auth/login.dart';
+import 'package:jahnhalle/pages/home/main_dashboard.dart';
+import 'package:jahnhalle/components/utils/keys.dart';
+import 'package:jahnhalle/components/utils/sp.dart';
+import 'package:jahnhalle/components/widgets/image_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

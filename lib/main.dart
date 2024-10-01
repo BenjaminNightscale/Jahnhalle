@@ -1,20 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:jahnhalle/components/cart/cart.dart';
-import 'package:jahnhalle/pages/mohsim/splash.dart';
-import 'package:jahnhalle/pages/mohsim/utils/sp.dart';
-import 'package:jahnhalle/utils/dimension.dart';
+import 'package:jahnhalle/services/database/cart.dart';
+import 'package:jahnhalle/pages/auth/splash.dart';
+import 'package:jahnhalle/components/utils/sp.dart';
+import 'package:jahnhalle/components/utils/dimension.dart';
 import 'package:provider/provider.dart';
 
-import 'package:jahnhalle/themes/app_theme.dart';
+import 'package:jahnhalle/components/themes/app_theme.dart';
 import 'firebase_options.dart';
-import 'pages/home_page.dart';
-import 'pages/mohsim/login.dart';
-import 'pages/mohsim/main_dashboard.dart'; // Diese Datei sollte generiert und korrekt konfiguriert sein
+import 'pages/auth/login.dart';
+import 'pages/home/main_dashboard.dart';
 
 Dimensions dimensions = Dimensions(height: 600, width: 480);
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:jahnhalle/components/app%20bar/homepage_app_bar.dart';
 import 'package:jahnhalle/components/drawer/my_drawer.dart';
 import 'package:jahnhalle/main.dart';
-import 'package:jahnhalle/pages/home_page.dart';
-import 'package:jahnhalle/pages/mohsim/checkout_screen.dart';
-import 'package:jahnhalle/pages/mohsim/event_overview.dart';
-import 'package:jahnhalle/pages/mohsim/model/event_card_model.dart';
-import 'package:jahnhalle/pages/mohsim/offer_details.dart';
-import 'package:jahnhalle/pages/mohsim/offers.dart';
-import 'package:jahnhalle/pages/mohsim/utils/keys.dart';
-import 'package:jahnhalle/pages/mohsim/utils/sp.dart';
-import 'package:jahnhalle/themes/colors.dart';
-import 'package:jahnhalle/widgets/image_widget.dart';
+import 'package:jahnhalle/pages/home/widgets/events_card.dart';
+import 'package:jahnhalle/pages/order/checkout_screen.dart';
+import 'package:jahnhalle/pages/home/event_overview.dart';
+import 'package:jahnhalle/services/model/event_card_model.dart';
+import 'package:jahnhalle/pages/offers/offer_details.dart';
+import 'package:jahnhalle/pages/offers/offers.dart';
+import 'package:jahnhalle/components/utils/keys.dart';
+import 'package:jahnhalle/components/utils/sp.dart';
+import 'package:jahnhalle/components/themes/colors.dart';
+import 'package:jahnhalle/components/widgets/image_widget.dart';
 
 import '../../services/database/event.dart';
 import '../../services/database/firestore.dart';
-import '../order_page.dart';
+import '../order/order_page.dart';
 
 class MainDashboard extends StatefulWidget {
   const MainDashboard({super.key});
@@ -56,7 +56,7 @@ class _MainDashboardState extends State<MainDashboard> {
                 if (snapshot.hasData) {
                   return Dialog(
                     clipBehavior: Clip.hardEdge,
-                    insetPadding: EdgeInsets.all(15),
+                    insetPadding: const EdgeInsets.all(15),
                     child: InkWell(
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
@@ -85,7 +85,7 @@ class _MainDashboardState extends State<MainDashboard> {
                     ),
                   );
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
               },
             ));
@@ -99,9 +99,10 @@ class _MainDashboardState extends State<MainDashboard> {
       ),
       drawer: const CustomDrawer(),
       body: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: dimensions.width * 0.04),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -113,7 +114,7 @@ class _MainDashboardState extends State<MainDashboard> {
                           builder: (context) => const OrderPage()),
                     );
                     if (pop == true) {
-                      showOfferDialoge();
+                      // showOfferDialoge();
                     }
                   },
                   child: Container(
@@ -180,14 +181,14 @@ class _MainDashboardState extends State<MainDashboard> {
             height: dimensions.width * 0.03,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: dimensions.width * 0.04),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: InkWell(
               onTap: () async {
                 final pop = await Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const OffersScreen(),
                 ));
                 if (pop == true) {
-                  showOfferDialoge();
+                  // showOfferDialoge();
                 }
               },
               child: Container(
@@ -232,32 +233,8 @@ class _MainDashboardState extends State<MainDashboard> {
           SizedBox(
             height: dimensions.width * 0.03,
           ),
-          // Center(
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       ElevatedButton(
-          //         onPressed: () {
-          //           Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //                 builder: (context) => const OrderPage()),
-          //           );
-          //         },
-          //         style: ElevatedButton.styleFrom(
-          //           foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          //           backgroundColor: Theme.of(context).colorScheme.primary,
-          //         ),
-          //         child: const Text('Go to Order Page'),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: dimensions.width * 0.03,
-          // ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: dimensions.width * 0.04),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
               'Nächste Events',
               style: Theme.of(context).textTheme.labelMedium,
@@ -267,8 +244,8 @@ class _MainDashboardState extends State<MainDashboard> {
             height: dimensions.width * 0.01,
           ),
           Container(
-            height: dimensions.width * 0.63,
-            padding: EdgeInsets.only(left: dimensions.width * 0.04),
+            height: 240,
+            padding: const EdgeInsets.only(left: 20.0),
             child: StreamBuilder<List<Event>>(
               stream: FirestoreService().streamEvents(),
               builder: (context, snapshot) {
@@ -283,7 +260,7 @@ class _MainDashboardState extends State<MainDashboard> {
                         final event = snapshot.data?[index] as Event;
                         return Padding(
                           padding: EdgeInsets.only(right: rightPadding),
-                          child: InkWell(
+                          child: GestureDetector(
                               onTap: () async {
                                 final pop = await Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -293,7 +270,7 @@ class _MainDashboardState extends State<MainDashboard> {
                                   ),
                                 );
                                 if (pop == true) {
-                                  showOfferDialoge();
+                                  // showOfferDialoge();
                                 }
                               },
                               child: EventCard(event: event)),
@@ -306,10 +283,10 @@ class _MainDashboardState extends State<MainDashboard> {
             ),
           ),
           SizedBox(
-            height: dimensions.width * 0.03,
+            height: dimensions.width * 0.0,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: dimensions.width * 0.04),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
               width: dimensions.width,
               padding: EdgeInsets.all(dimensions.width * 0.03),
@@ -338,7 +315,7 @@ class _MainDashboardState extends State<MainDashboard> {
               height: dimensions.width * 0.03,
             ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: dimensions.width * 0.04),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               children: [
                 if (SP.i.getString(key: SPKeys.isLoggedIn) == null)
@@ -425,56 +402,3 @@ class _MainDashboardState extends State<MainDashboard> {
     );
   }
 }
-
-// class EventCard extends StatelessWidget {
-//   final Event event;
-
-//   const EventCard({super.key, required this.event});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: dimensions.width * 0.75,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           ClipRRect(
-//             child: Container(
-//                 decoration: BoxDecoration(
-//                   border: Border.all(
-//                       color: Theme.of(context).colorScheme.onSurface,
-//                       width: 2.0),
-//                   color: Colors.white,
-//                 ),
-//                 child: Image.asset(
-//                   event.imageUrl ?? "",
-//                   fit: BoxFit.cover,
-//                   height: dimensions.height * 0.2,
-//                   width: double.infinity,
-//                 )),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.symmetric(vertical: 8.0),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(
-//                   event.name,
-//                   style: const TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 18,
-//                       fontWeight: FontWeight.bold),
-//                 ),
-//                 const SizedBox(height: 4),
-//                 Text(
-//                   'Sa - ${event.date}',
-//                   style: const TextStyle(fontSize: 14),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

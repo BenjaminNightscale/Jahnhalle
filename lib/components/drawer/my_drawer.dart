@@ -5,9 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jahnhalle/components/drawer/my_drawer_tile.dart';
 import 'package:jahnhalle/components/drawer/user_modal.dart';
-import 'package:jahnhalle/pages/mohsim/login.dart';
-import 'package:jahnhalle/pages/mohsim/utils/keys.dart';
-import 'package:jahnhalle/pages/mohsim/utils/sp.dart';
+import 'package:jahnhalle/pages/auth/login.dart';
+import 'package:jahnhalle/components/utils/keys.dart';
+import 'package:jahnhalle/components/utils/sp.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});

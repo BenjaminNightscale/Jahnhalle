@@ -15,6 +15,7 @@ class Event {
   String? tiktok;
   String? imageUrl; // New field
   String? eventImage;
+  String? discount;
 
   Event(
       {required this.id,
@@ -29,6 +30,7 @@ class Event {
       this.instagram,
       this.facebook,
       this.tiktok,
+      this.discount,
       this.imageUrl, // New field
       this.eventImage});
 
@@ -42,6 +44,7 @@ class Event {
         musicGenre: data['musicGenre'] ?? '',
         specials: data['specials'],
         tickets: data['tickets'],
+        discount: data['discount'],
         ticketCost: (data['ticketCost'] ?? 0.0).toDouble(),
         eventDetails: data['eventDetails'] ?? '',
         instagram: data['instagram'],
@@ -60,6 +63,7 @@ class Event {
       'specials': specials,
       'tickets': tickets,
       'ticketCost': ticketCost,
+      'discount': discount,
       'eventDetails': eventDetails,
       'instagram': instagram,
       'facebook': facebook,
