@@ -106,20 +106,55 @@ class _MainDashboardState extends State<MainDashboard> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  onTap: () async {
-                    final pop = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const OrderPage()),
-                    );
-                    if (pop == true) {
-                      // showOfferDialoge();
-                    }
-                  },
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final pop = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const OrderPage()),
+                      );
+                      if (pop == true) {
+                        // showOfferDialoge();
+                      }
+                    },
+                    child: Container(
+                      height: dimensions.height * 0.15,
+                      // width: dimensions.width * 0.45,
+                      padding: EdgeInsets.all(dimensions.width * 0.03),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              width: 2.0),
+                          color: scaffoldBackgroundColor,
+                          image: const DecorationImage(
+                              image: AssetImage(
+                                'assets/images/Mask group (3).png',
+                              ),
+                              alignment: Alignment.bottomRight)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'BESTELLEN',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          Text(
+                            'Drinks, Essen,etc',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: dimensions.width * 0.03,
+                ),
+                Expanded(
                   child: Container(
                     height: dimensions.height * 0.15,
-                    width: dimensions.width * 0.45,
+                    // width: dimensions.width * 0.45,
                     padding: EdgeInsets.all(dimensions.width * 0.03),
                     decoration: BoxDecoration(
                         border: Border.all(
@@ -128,14 +163,14 @@ class _MainDashboardState extends State<MainDashboard> {
                         color: scaffoldBackgroundColor,
                         image: const DecorationImage(
                             image: AssetImage(
-                              'assets/images/Mask group (3).png',
+                              'assets/images/Pizza Box Mockup 3.png',
                             ),
                             alignment: Alignment.bottomRight)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'BESTELLEN',
+                          'ABHOLEN',
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                         Text(
@@ -144,34 +179,6 @@ class _MainDashboardState extends State<MainDashboard> {
                         ),
                       ],
                     ),
-                  ),
-                ),
-                Container(
-                  height: dimensions.height * 0.15,
-                  width: dimensions.width * 0.45,
-                  padding: EdgeInsets.all(dimensions.width * 0.03),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          width: 2.0),
-                      color: scaffoldBackgroundColor,
-                      image: const DecorationImage(
-                          image: AssetImage(
-                            'assets/images/Pizza Box Mockup 3.png',
-                          ),
-                          alignment: Alignment.bottomRight)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'ABHOLEN',
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                      Text(
-                        'Drinks, Essen,etc',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
                   ),
                 )
               ],

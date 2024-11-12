@@ -153,7 +153,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "${item.price}€",
+                                      "${item.price.toStringAsFixed(2)}€",
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
